@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\vziex\\source\\repos\\HighConfidenceAlignmentBlocks\\HighConfidenceAlignmentBlocks.csproj": {}
+    "C:\\Users\\vziex\\source\\repos\\bioinfo-high-confidence-alignment\\HighConfidenceAlignmentBlocks.csproj": {}
   },
   "projects": {
-    "C:\\Users\\vziex\\source\\repos\\HighConfidenceAlignmentBlocks\\HighConfidenceAlignmentBlocks.csproj": {
+    "C:\\Users\\vziex\\source\\repos\\bioinfo-high-confidence-alignment\\HighConfidenceAlignmentBlocks.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\vziex\\source\\repos\\HighConfidenceAlignmentBlocks\\HighConfidenceAlignmentBlocks.csproj",
+        "projectUniqueName": "C:\\Users\\vziex\\source\\repos\\bioinfo-high-confidence-alignment\\HighConfidenceAlignmentBlocks.csproj",
         "projectName": "HighConfidenceAlignmentBlocks",
-        "projectPath": "C:\\Users\\vziex\\source\\repos\\HighConfidenceAlignmentBlocks\\HighConfidenceAlignmentBlocks.csproj",
+        "projectPath": "C:\\Users\\vziex\\source\\repos\\bioinfo-high-confidence-alignment\\HighConfidenceAlignmentBlocks.csproj",
         "packagesPath": "C:\\Users\\vziex\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\vziex\\source\\repos\\HighConfidenceAlignmentBlocks\\obj\\",
+        "outputPath": "C:\\Users\\vziex\\source\\repos\\bioinfo-high-confidence-alignment\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"

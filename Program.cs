@@ -52,31 +52,25 @@ namespace HighConfidenceAlignmentBlocks
                     var column_size = 1; // reset column size
                     i += column_size; // move counter to curent position plus increment size to begin processsing next block after the current block
                     
-                    //var highConfidenceBlocksLocal = new List<List<string>>();
-
+                 
                     var ratio = ExtractLocalHighConfidenceBlocks(genomes, blockStart, column_size, gapRatios);
 
                     // the the gap ratio is greater than or equal to 40%, do not add that block
                     if (ratio >= 0.4)
                     {
-                        //highConfidenceBlocksLocal.Clear();
                         Console.WriteLine("Gap ratio is greater than or equal to 40%, discarding block starting at position {0} to position {1}, Increment Size: {2}", blockStart, blockStart + column_size, column_size);
-                        //Thread.Sleep(500);
+                   
                     }
                     else
                     {
-                        // else if the gap ratio is strictly less than 40%,
-                        //var temp = new List<List<string>>(highConfidenceBlocksLocal); // assign the blocks to a temporary variable
-
+                        // else if the gap ratio is strictly less than 40%
                         // gap ratio is less than 40% in that column,
                         while (ratio < 0.4)
                         {
                             Console.WriteLine("Continuing...");
-                            //highConfidenceBlocksLocal = temp;
+                      
                             column_size++; // keep incrementing column size to be added to the block as long as the gap count is less than 40%
                             Console.WriteLine("Processing block starting at position {0} to position {1}, Increment Size: {2}", blockStart, blockStart + column_size, column_size);
-                       
-                            //temp.Clear();
 
                           
                             ratio = ExtractLocalHighConfidenceBlocks(genomes, blockStart, column_size, gapRatios);
@@ -86,7 +80,7 @@ namespace HighConfidenceAlignmentBlocks
                           
                             Console.WriteLine();
                         }
-
+                        column_size--;
                         if (column_size >= 16) // longer than 15 nucleotides, 1 column of nucleotides = 1 position
                         {
                             // take note of the start and end positions of each high-confidence block
@@ -103,7 +97,7 @@ namespace HighConfidenceAlignmentBlocks
                 Console.WriteLine("Total nucleotides in the blocks: {0}", totalSequencesInHighConfidenceBlocks);
 
                 // should be 53% per paper: "...regions (spanning 53% of the total alignment)..."
-                Console.WriteLine("Ratio of genomes in blocks over the entire MSA: {0}%", (totalSequencesInHighConfidenceBlocks / (944 * 40059) * 100));
+                Console.WriteLine("Ratio of sequences in blocks over the entire MSA: {0}%", (totalSequencesInHighConfidenceBlocks / (944 * 40059) * 100));
 
                 Console.WriteLine("{0} high-confidence blocks detected", positions.Count);
             }
@@ -130,7 +124,7 @@ namespace HighConfidenceAlignmentBlocks
                 // add the appended region for this genome in a temporary list
                 genomicRegion.Add(appendedRegion);
 
-                //highConfidenceBlocksLocal.Add(columnsPerGenome);
+               
             }
 
             // perform column-wise comparison to check if < 40% gaps IN EACH POSITION (meaning: in each column)
