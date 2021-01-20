@@ -1,0 +1,13 @@
+C:\Users\vziex\source\repos\HighConfidenceAlignmentBlocks\bin\Debug\netcoreapp3.1\HighConfidenceAlignmentBlocks.exe
+C:\Users\vziex\source\repos\HighConfidenceAlignmentBlocks\bin\Debug\netcoreapp3.1\HighConfidenceAlignmentBlocks.deps.json
+C:\Users\vziex\source\repos\HighConfidenceAlignmentBlocks\bin\Debug\netcoreapp3.1\HighConfidenceAlignmentBlocks.runtimeconfig.json
+C:\Users\vziex\source\repos\HighConfidenceAlignmentBlocks\bin\Debug\netcoreapp3.1\HighConfidenceAlignmentBlocks.runtimeconfig.dev.json
+C:\Users\vziex\source\repos\HighConfidenceAlignmentBlocks\bin\Debug\netcoreapp3.1\HighConfidenceAlignmentBlocks.dll
+C:\Users\vziex\source\repos\HighConfidenceAlignmentBlocks\bin\Debug\netcoreapp3.1\HighConfidenceAlignmentBlocks.pdb
+C:\Users\vziex\source\repos\HighConfidenceAlignmentBlocks\obj\Debug\netcoreapp3.1\HighConfidenceAlignmentBlocks.csprojAssemblyReference.cache
+C:\Users\vziex\source\repos\HighConfidenceAlignmentBlocks\obj\Debug\netcoreapp3.1\HighConfidenceAlignmentBlocks.AssemblyInfoInputs.cache
+C:\Users\vziex\source\repos\HighConfidenceAlignmentBlocks\obj\Debug\netcoreapp3.1\HighConfidenceAlignmentBlocks.AssemblyInfo.cs
+C:\Users\vziex\source\repos\HighConfidenceAlignmentBlocks\obj\Debug\netcoreapp3.1\HighConfidenceAlignmentBlocks.csproj.CoreCompileInputs.cache
+C:\Users\vziex\source\repos\HighConfidenceAlignmentBlocks\obj\Debug\netcoreapp3.1\HighConfidenceAlignmentBlocks.dll
+C:\Users\vziex\source\repos\HighConfidenceAlignmentBlocks\obj\Debug\netcoreapp3.1\HighConfidenceAlignmentBlocks.pdb
+C:\Users\vziex\source\repos\HighConfidenceAlignmentBlocks\obj\Debug\netcoreapp3.1\HighConfidenceAlignmentBlocks.genruntimeconfig.cache
