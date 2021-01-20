@@ -97,7 +97,7 @@ namespace HighConfidenceAlignmentBlocks
                 Console.WriteLine("Total nucleotides in the blocks: {0}", totalSequencesInHighConfidenceBlocks);
 
                 // should be 53% per paper: "...regions (spanning 53% of the total alignment)..."
-                Console.WriteLine("Ratio of sequences in blocks over the entire MSA: {0}%", (totalSequencesInHighConfidenceBlocks / (944 * 40059) * 100));
+                Console.WriteLine("Ratio of sequences in blocks over the entire MSA: {0}%", (totalSequencesInHighConfidenceBlocks / (944 * 40059)) * 100);
 
                 Console.WriteLine("{0} high-confidence blocks detected", positions.Count);
             }
