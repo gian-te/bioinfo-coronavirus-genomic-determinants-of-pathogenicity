@@ -18,6 +18,76 @@ namespace HighConfidenceAlignmentBlocks
          */
         static void Main(string[] args)
         {
+            // column with more than or equal to 40%, throw out 15 columns to the left AND to the right???????
+            // approach 1:
+            //Approach1();
+
+            // approach 2:
+            Approach2();
+        }
+
+        private static void Approach2()
+        {
+            try
+            {
+                Dictionary<int, double> gapRatios = new Dictionary<int, double>();
+
+                List<List<string>> genomes = new List<List<string>>();
+                List<List<string>> highConfidenceBlocks = new List<List<string>>();
+
+                #region LOAD DATA
+                using (var reader = new StreamReader(@"C:\Users\vziex\Desktop\DLSU\BIOINFO\Bioinfo Report 2\new_dataset_final.txt"))
+                {
+
+                    while (!reader.EndOfStream)
+                    {
+                        var line = reader.ReadLine();
+                        if (line.StartsWith(">"))
+                        {
+                            continue;
+                        }
+                        var values = line.Split(',').ToList();
+                        values = values.Skip(1).ToList();
+                        genomes.Add(values);
+                    }
+                }
+                #endregion
+                List<int> allColumns = new List<int>();
+                List<int> badColumns = new List<int>();
+                for (int i = 0; i < 40059; i++) // for every column
+                {
+                    Console.WriteLine("Processing column {0}", i);
+                    var ratio = ExtractLocalHighConfidenceBlocks(genomes, i, 1, gapRatios);
+                    if (ratio >= 0.40)
+                    {
+                        badColumns.Add(i);
+                    }
+                    allColumns.Add(i);
+                }
+
+                Console.WriteLine("Bad columns: {0}", badColumns.Count);
+                //List<Tuple<int, int>> positions = new List<Tuple<int, int>>();
+                foreach (var badColumn in badColumns)
+                {
+                    var start = badColumn - 15;
+                    var end = badColumn + 15;
+                    for (int i = start; i <= end; i++)
+                    {
+                        allColumns.Remove(i);
+                    }
+                }
+
+                Console.WriteLine("Good columns: {0}", allColumns.Count);
+                Console.WriteLine("Ratio of sequences in blocks over the entire MSA: {0}%", ((double)(allColumns.Count * 944)) / (944 * 40059) * 100);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+        }
+
+        private static void Approach1()
+        {
             List<Tuple<int, int>> positions = new List<Tuple<int, int>>();
             double totalSequencesInHighConfidenceBlocks = 0;
             try
@@ -51,15 +121,15 @@ namespace HighConfidenceAlignmentBlocks
                     var blockStart = i;
                     var column_size = 1; // reset column size
                     i += column_size; // move counter to curent position plus increment size to begin processsing next block after the current block
-                    
-                 
+
+
                     var ratio = ExtractLocalHighConfidenceBlocks(genomes, blockStart, column_size, gapRatios);
 
                     // the the gap ratio is greater than or equal to 40%, do not add that block
                     if (ratio >= 0.4)
                     {
                         Console.WriteLine("Gap ratio is greater than or equal to 40%, discarding block starting at position {0} to position {1}, Increment Size: {2}", blockStart, blockStart + column_size, column_size);
-                   
+
                     }
                     else
                     {
@@ -68,16 +138,16 @@ namespace HighConfidenceAlignmentBlocks
                         while (ratio < 0.4)
                         {
                             Console.WriteLine("Continuing...");
-                      
+
                             column_size++; // keep incrementing column size to be added to the block as long as the gap count is less than 40%
                             Console.WriteLine("Processing block starting at position {0} to position {1}, Increment Size: {2}", blockStart, blockStart + column_size, column_size);
 
-                          
+
                             ratio = ExtractLocalHighConfidenceBlocks(genomes, blockStart, column_size, gapRatios);
                             Console.WriteLine("Gap ratio for column {0} is: {1}% gaps", blockStart + column_size, ratio * 100);
 
 
-                          
+
                             Console.WriteLine();
                         }
                         column_size--;
@@ -162,5 +232,6 @@ namespace HighConfidenceAlignmentBlocks
             return retVal;
 
         }
+
     }
 }
