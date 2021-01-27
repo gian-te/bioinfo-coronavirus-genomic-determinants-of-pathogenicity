@@ -35,6 +35,7 @@ namespace HighConfidenceAlignmentBlocks
                 List<List<string>> genomes = new List<List<string>>();
                 List<List<string>> highConfidenceBlocks = new List<List<string>>();
 
+                // load the data into the genomes List of List
                 #region LOAD DATA
                 using (var reader = new StreamReader(@"C:\Users\vziex\Desktop\DLSU\BIOINFO\Bioinfo Report 2\new_dataset_final.txt"))
                 {
@@ -52,12 +53,13 @@ namespace HighConfidenceAlignmentBlocks
                     }
                 }
                 #endregion
+
                 List<int> allColumns = new List<int>();
                 List<int> badColumns = new List<int>();
                 for (int i = 0; i < 40059; i++) // for every column
                 {
                     Console.WriteLine("Processing column {0}", i);
-                    var ratio = ExtractLocalHighConfidenceBlocks(genomes, i, 1, gapRatios);
+                    var ratio = GetColumnRatios(genomes, i, 1, gapRatios);
                     if (ratio >= 0.40)
                     {
                         badColumns.Add(i);
@@ -66,19 +68,21 @@ namespace HighConfidenceAlignmentBlocks
                 }
 
                 Console.WriteLine("Bad columns: {0}", badColumns.Count);
-                //List<Tuple<int, int>> positions = new List<Tuple<int, int>>();
+
                 foreach (var badColumn in badColumns)
                 {
                     var start = badColumn - 15;
                     var end = badColumn + 15;
+                    // remove the flanks
                     for (int i = start; i <= end; i++)
                     {
                         allColumns.Remove(i);
                     }
                 }
 
-                Console.WriteLine("Good columns: {0}", allColumns.Count);
-                Console.WriteLine("Ratio of sequences in blocks over the entire MSA: {0}%", ((double)(allColumns.Count * 944)) / (944 * 40059) * 100);
+                var goodColumns = allColumns;
+                Console.WriteLine("Good columns after subtracting the flanks: {0}", goodColumns.Count);
+                Console.WriteLine("Ratio of sequences in blocks over the entire MSA: {0}%", ((double)(goodColumns.Count * 944)) / (944 * 40059) * 100);
             }
             catch (Exception ex)
             {
@@ -123,7 +127,7 @@ namespace HighConfidenceAlignmentBlocks
                     i += column_size; // move counter to curent position plus increment size to begin processsing next block after the current block
 
 
-                    var ratio = ExtractLocalHighConfidenceBlocks(genomes, blockStart, column_size, gapRatios);
+                    var ratio = GetColumnRatios(genomes, blockStart, column_size, gapRatios);
 
                     // the the gap ratio is greater than or equal to 40%, do not add that block
                     if (ratio >= 0.4)
@@ -143,7 +147,7 @@ namespace HighConfidenceAlignmentBlocks
                             Console.WriteLine("Processing block starting at position {0} to position {1}, Increment Size: {2}", blockStart, blockStart + column_size, column_size);
 
 
-                            ratio = ExtractLocalHighConfidenceBlocks(genomes, blockStart, column_size, gapRatios);
+                            ratio = GetColumnRatios(genomes, blockStart, column_size, gapRatios);
                             Console.WriteLine("Gap ratio for column {0} is: {1}% gaps", blockStart + column_size, ratio * 100);
 
 
@@ -179,7 +183,7 @@ namespace HighConfidenceAlignmentBlocks
             }
         }
 
-        private static double ExtractLocalHighConfidenceBlocks(List<List<string>> genomes, int blockStart, int increment, Dictionary<int, double> gapRatios)
+        private static double GetColumnRatios(List<List<string>> genomes, int blockStart, int increment, Dictionary<int, double> gapRatios)
         {
             var genomicRegion = new List<string>();
             double retVal = 0;
