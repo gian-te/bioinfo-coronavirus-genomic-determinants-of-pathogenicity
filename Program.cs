@@ -81,6 +81,48 @@ namespace HighConfidenceAlignmentBlocks
                 }
 
                 var goodColumns = allColumns;
+                // identify regions
+                List<Tuple<int, int>> positions = new List<Tuple<int, int>>();
+                int blockStart = 0;
+                for (int i = 0; i < goodColumns.Count;)
+                {
+                    if (i + 1 >= goodColumns.Count)
+                    {
+                        break;
+                    }
+
+                    if (goodColumns[i + 1] == goodColumns[i] + 1)
+                    {
+                        i += 1;
+                    }
+                    else
+                    {
+                        positions.Add(new Tuple<int, int>(blockStart, i));
+                        i += 1;
+                        if (i < goodColumns.Count)
+                        {
+                            blockStart = i;
+                        }
+                    }
+                }
+
+                var fileCounter = 0;
+                foreach (var ranges in positions)
+                {
+                    // 944 rows
+                    var fileText = "";
+                    for (int i = 0; i < 944; i++)
+                    {
+                        var row = string.Join(",", genomes[i].GetRange(ranges.Item1, ranges.Item2 - ranges.Item1 + 1));
+                        fileText += row;
+                        fileText += Environment.NewLine;
+                    }
+
+                    System.IO.File.WriteAllText(string.Format("file{0}.txt", fileCounter), fileText);
+                    // 1 file per range
+                    fileCounter++;
+                }
+
                 Console.WriteLine("Good columns after subtracting the flanks: {0}", goodColumns.Count);
                 Console.WriteLine("Ratio of sequences in blocks over the entire MSA: {0}%", ((double)(goodColumns.Count * 944)) / (944 * 40059) * 100);
             }
