@@ -97,7 +97,7 @@ namespace HighConfidenceAlignmentBlocks
                     }
                     else
                     {
-                        positions.Add(new Tuple<int, int>(blockStart, i));
+                        positions.Add(new Tuple<int, int>(goodColumns[blockStart], goodColumns[i]));
                         i += 1;
                         if (i < goodColumns.Count)
                         {
