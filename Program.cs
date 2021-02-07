@@ -19,12 +19,122 @@ namespace HighConfidenceAlignmentBlocks
         static void Main(string[] args)
         {
             // column with more than or equal to 40%, throw out 15 columns to the left AND to the right???????
-            // approach 1:
+            // approach 1: at least 16nt long regions where each column has less than 40% gaps
             //Approach1();
 
-            // approach 2:
-            Approach2();
+            // approach 2: remove flanks of columns that have more than or equal to 40% gaps 15nt to the left and 15nt to the right
+            //Approach2();
+
+            // approach 3: remove flanks of columns that have less than 40% gaps 15nt to the left and 15nt to the right
+            Approach3();
         }
+        private static void Approach3()
+        {
+            try
+            {
+                Dictionary<int, double> gapRatios = new Dictionary<int, double>();
+
+                List<List<string>> genomes = new List<List<string>>();
+                List<List<string>> highConfidenceBlocks = new List<List<string>>();
+
+                // load the data into the genomes List of List
+                #region LOAD DATA
+                using (var reader = new StreamReader(@"C:\Users\vziex\Desktop\DLSU\BIOINFO\Bioinfo Report 2\new_dataset_final.txt"))
+                {
+
+                    while (!reader.EndOfStream)
+                    {
+                        var line = reader.ReadLine();
+                        if (line.StartsWith(">"))
+                        {
+                            continue;
+                        }
+                        var values = line.Split(',').ToList();
+                        values = values.Skip(1).ToList();
+                        genomes.Add(values);
+                    }
+                }
+                #endregion
+
+                List<int> allColumns = new List<int>();
+                List<int> goodColumns = new List<int>();
+                for (int i = 0; i < 40059; i++) // for every column
+                {
+                    Console.WriteLine("Processing column {0}", i);
+                    var ratio = GetColumnRatios(genomes, i, 1, gapRatios);
+                    if (ratio <= 0.40)
+                    {
+                        goodColumns.Add(i);
+                    }
+                    allColumns.Add(i);
+                }
+
+                Console.WriteLine("Desired columns: {0}", goodColumns.Count);
+
+                foreach (var goodColumn in goodColumns)
+                {
+                    var start = goodColumn - 15;
+                    var end = goodColumn + 15;
+                    // remove the flanks
+                    for (int i = start; i <= end; i++)
+                    {
+                        allColumns.Remove(i);
+                    }
+                }
+
+                //var goodColumns = allColumns;
+                // identify regions, we are hoping here that we get regions that are close to the regions detected in supporting table 1
+                List<Tuple<int, int>> positions = new List<Tuple<int, int>>();
+                int blockStart = 0;
+                for (int i = 0; i < goodColumns.Count;)
+                {
+                    if (i + 1 >= goodColumns.Count)
+                    {
+                        break;
+                    }
+
+                    if (goodColumns[i + 1] == goodColumns[i] + 1)
+                    {
+                        i += 1;
+                    }
+                    else
+                    {
+                        positions.Add(new Tuple<int, int>(goodColumns[blockStart], goodColumns[i]));
+                        i += 1;
+                        if (i < goodColumns.Count)
+                        {
+                            blockStart = i;
+                        }
+                    }
+                }
+
+                //var fileCounter = 0;
+                //foreach (var ranges in positions)
+                //{
+                //    // 944 rows
+                //    var fileText = "";
+                //    for (int i = 0; i < 944; i++)
+                //    {
+                //        var row = string.Join(",", genomes[i].GetRange(ranges.Item1, ranges.Item2 - ranges.Item1 + 1));
+                //        fileText += row;
+                //        fileText += Environment.NewLine;
+                //    }
+
+                //    System.IO.File.WriteAllText(string.Format("file{0}.txt", fileCounter), fileText);
+                //    // 1 file per range
+                //    fileCounter++;
+                //}
+
+                Console.WriteLine("Good columns after subtacting the flanks: {0}", goodColumns.Count);
+                var find = goodColumns.Where(x => x == 36461).Count();
+                Console.WriteLine("Ratio of sequences in blocks over the entire MSA: {0}%", ((double)(goodColumns.Count * 944)) / (944 * 40059) * 100);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+        }
+
 
         private static void Approach2()
         {
@@ -82,6 +192,7 @@ namespace HighConfidenceAlignmentBlocks
 
                 var goodColumns = allColumns;
                 // identify regions
+                // identify regions, we are hoping here that we get regions that are close to the regions detected in supporting table 1
                 List<Tuple<int, int>> positions = new List<Tuple<int, int>>();
                 int blockStart = 0;
                 for (int i = 0; i < goodColumns.Count;)
