@@ -20,13 +20,13 @@ namespace HighConfidenceAlignmentBlocks
         {
             // column with more than or equal to 40%, throw out 15 columns to the left AND to the right???????
             // approach 1: at least 16nt long regions where each column has less than 40% gaps
-            //Approach1();
+            Approach1();
 
             // approach 2: remove flanks of columns that have more than or equal to 40% gaps 15nt to the left and 15nt to the right
             //Approach2();
 
             // approach 3: remove flanks of columns that have less than 40% gaps 15nt to the left and 15nt to the right
-            Approach3();
+            //Approach3();
         }
         private static void Approach3()
         {
@@ -126,8 +126,19 @@ namespace HighConfidenceAlignmentBlocks
                 //}
 
                 Console.WriteLine("Good columns after subtacting the flanks: {0}", goodColumns.Count);
-                var find = goodColumns.Where(x => x == 36461).Count();
-                Console.WriteLine("Ratio of sequences in blocks over the entire MSA: {0}%", ((double)(goodColumns.Count * 944)) / (944 * 40059) * 100);
+                var findRegion1 = goodColumns.Where(x => x >= 7281 && x <= 7291).Count();
+                var findRegion2 = goodColumns.Where(x => x >= 10446 && x <= 10451).Count();
+                var findRegion3 = goodColumns.Where(x => x >= 14249 && x <= 14249).Count();
+                var findRegion4 = goodColumns.Where(x => x >= 25041 && x <= 25108).Count();
+                var findRegion5 = goodColumns.Where(x => x >= 29498 && x <= 29498).Count();
+                var findRegion6 = goodColumns.Where(x => x >= 32029 && x <= 32040).Count();
+                var findRegion7 = goodColumns.Where(x => x >= 32906 && x <= 32927).Count();
+                var findRegion8 = goodColumns.Where(x => x >= 36459 && x <= 36462).Count();
+                var findRegion9 = goodColumns.Where(x => x >= 38798 && x <= 38808).Count();
+                var findRegion10 = goodColumns.Where(x => x >= 38926 && x <= 38941).Count();
+                var findRegion11 = goodColumns.Where(x => x >= 39356 && x <= 39360).Count();
+
+                Console.WriteLine("Ratio of sequences in blocks over the entire MSA: {0}%", ((double)(allColumns.Count * 944)) / (944 * 40059) * 100);
             }
             catch (Exception ex)
             {
@@ -217,24 +228,35 @@ namespace HighConfidenceAlignmentBlocks
                     }
                 }
 
-                var fileCounter = 0;
-                foreach (var ranges in positions)
-                {
-                    // 944 rows
-                    var fileText = "";
-                    for (int i = 0; i < 944; i++)
-                    {
-                        var row = string.Join(",", genomes[i].GetRange(ranges.Item1, ranges.Item2 - ranges.Item1 + 1));
-                        fileText += row;
-                        fileText += Environment.NewLine;
-                    }
+                //var fileCounter = 0;
+                //foreach (var ranges in positions)
+                //{
+                //    // 944 rows
+                //    var fileText = "";
+                //    for (int i = 0; i < 944; i++)
+                //    {
+                //        var row = string.Join(",", genomes[i].GetRange(ranges.Item1, ranges.Item2 - ranges.Item1 + 1));
+                //        fileText += row;
+                //        fileText += Environment.NewLine;
+                //    }
 
-                    System.IO.File.WriteAllText(string.Format("file{0}.txt", fileCounter), fileText);
-                    // 1 file per range
-                    fileCounter++;
-                }
+                //    System.IO.File.WriteAllText(string.Format("file{0}.txt", fileCounter), fileText);
+                //    // 1 file per range
+                //    fileCounter++;
+                //}
 
                 Console.WriteLine("Good columns after subtracting the flanks: {0}", goodColumns.Count);
+                var findRegion1 = goodColumns.Where(x => x >= 7281 && x <= 7291).Count();
+                var findRegion2 = goodColumns.Where(x => x >= 10446 && x <= 10451).Count();
+                var findRegion3 = goodColumns.Where(x => x >= 14249 && x <= 14249).Count();
+                var findRegion4 = goodColumns.Where(x => x >= 25041 && x <= 25108).Count();
+                var findRegion5 = goodColumns.Where(x => x >= 29498 && x <= 29498).Count();
+                var findRegion6 = goodColumns.Where(x => x >= 32029 && x <= 32040).Count();
+                var findRegion7 = goodColumns.Where(x => x >= 32906 && x <= 32927).Count();
+                var findRegion8 = goodColumns.Where(x => x >= 36459 && x <= 36462).Count();
+                var findRegion9 = goodColumns.Where(x => x >= 38798 && x <= 38808).Count();
+                var findRegion10 = goodColumns.Where(x => x >= 38926 && x <= 38941).Count();
+                var findRegion11 = goodColumns.Where(x => x >= 39356 && x <= 39360).Count();
                 Console.WriteLine("Ratio of sequences in blocks over the entire MSA: {0}%", ((double)(goodColumns.Count * 944)) / (944 * 40059) * 100);
             }
             catch (Exception ex)
@@ -250,7 +272,7 @@ namespace HighConfidenceAlignmentBlocks
             try
             {
                 Dictionary<int, double> gapRatios = new Dictionary<int, double>();
-
+                List<int> goodColumns = new List<int>();
                 List<List<string>> genomes = new List<List<string>>();
                 List<List<string>> highConfidenceBlocks = new List<List<string>>();
 
@@ -312,6 +334,10 @@ namespace HighConfidenceAlignmentBlocks
                         {
                             // take note of the start and end positions of each high-confidence block
                             positions.Add(new Tuple<int, int>(blockStart, blockStart + column_size));
+                            for (int j = blockStart; j <= blockStart + column_size; j++)
+                            {
+                                goodColumns.Add(j);
+                            }
                             i = blockStart + column_size;
                             blockStart = i;
                             totalSequencesInHighConfidenceBlocks += column_size * 944; // number of sequences = number of columns * 944 rows
@@ -325,7 +351,17 @@ namespace HighConfidenceAlignmentBlocks
 
                 // should be 53% per paper: "...regions (spanning 53% of the total alignment)..."
                 Console.WriteLine("Ratio of sequences in blocks over the entire MSA: {0}%", (totalSequencesInHighConfidenceBlocks / (944 * 40059)) * 100);
-
+                var findRegion1 = goodColumns.Where(x => x >= 7281 && x <= 7291).Count();
+                var findRegion2 = goodColumns.Where(x => x >= 10446 && x <= 10451).Count();
+                var findRegion3 = goodColumns.Where(x => x >= 14249 && x <= 14249).Count();
+                var findRegion4 = goodColumns.Where(x => x >= 25041 && x <= 25108).Count();
+                var findRegion5 = goodColumns.Where(x => x >= 29498 && x <= 29498).Count();
+                var findRegion6 = goodColumns.Where(x => x >= 32029 && x <= 32040).Count();
+                var findRegion7 = goodColumns.Where(x => x >= 32906 && x <= 32927).Count();
+                var findRegion8 = goodColumns.Where(x => x >= 36459 && x <= 36462).Count();
+                var findRegion9 = goodColumns.Where(x => x >= 38798 && x <= 38808).Count();
+                var findRegion10 = goodColumns.Where(x => x >= 38926 && x <= 38941).Count();
+                var findRegion11 = goodColumns.Where(x => x >= 39356 && x <= 39360).Count();
                 Console.WriteLine("{0} high-confidence blocks detected", positions.Count);
             }
             catch (Exception ex)
