@@ -1,0 +1,1 @@
+code to convert the sequences and gaps in the multiple alignment file to the coded alignment

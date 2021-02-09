@@ -1,0 +1,1 @@
+this folder contains the genomes for 944 genomes having 40059 columns after the multiple sequence alignment

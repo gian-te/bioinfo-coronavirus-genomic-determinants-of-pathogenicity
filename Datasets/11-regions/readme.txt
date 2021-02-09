@@ -1,0 +1,1 @@
+this folder contains the genomes for the 11 regions that were identified by Gussow et al
